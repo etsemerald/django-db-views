@@ -20,7 +20,8 @@ class ForwardViewMigrationBase(ViewMigration):
                 self.view_engine is None
                 or self.view_engine == schema_editor.connection.settings_dict["ENGINE"]
             ):
-                schema_editor.execute(self.DROP_COMMAND_TEMPLATE % self.table_name)
+                if self.DROP_COMMAND_TEMPLATE
+                    schema_editor.execute(self.DROP_COMMAND_TEMPLATE % self.table_name)
                 schema_editor.execute(
                     self.CREATE_COMMAND_TEMPLATE
                     % (self.table_name, self.view_definition)
@@ -30,9 +31,9 @@ class ForwardViewMigrationBase(ViewMigration):
 class BackwardViewMigrationBase(ViewMigration):
     def __call__(self, apps, schema_editor):
         if (
-            self.view_engine is None
-            or self.view_engine == schema_editor.connection.settings_dict["ENGINE"]
-        ):
+            (self.view_engine is None
+            or self.view_engine == schema_editor.connection.settings_dict["ENGINE"])
+        ) and self.DROP_COMMAND_TEMPLATE:
             schema_editor.execute(self.DROP_COMMAND_TEMPLATE % self.table_name)
         if self.view_definition:
             if (
@@ -47,13 +48,11 @@ class BackwardViewMigrationBase(ViewMigration):
 
 @deconstructible
 class ForwardViewMigration(ForwardViewMigrationBase):
-    DROP_COMMAND_TEMPLATE = ""
     CREATE_COMMAND_TEMPLATE = "CREATE OR REPLACE VIEW %s as %s;"
 
 
 @deconstructible
 class BackwardViewMigration(BackwardViewMigrationBase):
-    DROP_COMMAND_TEMPLATE = ""
     CREATE_COMMAND_TEMPLATE = "CREATE OR REPLACE VIEW %s as %s;"
 
 
