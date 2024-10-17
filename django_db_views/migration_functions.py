@@ -47,14 +47,14 @@ class BackwardViewMigrationBase(ViewMigration):
 
 @deconstructible
 class ForwardViewMigration(ForwardViewMigrationBase):
-    DROP_COMMAND_TEMPLATE = "DROP VIEW IF EXISTS %s;"
-    CREATE_COMMAND_TEMPLATE = "CREATE VIEW %s as %s;"
+    DROP_COMMAND_TEMPLATE = ""
+    CREATE_COMMAND_TEMPLATE = "CREATE OR REPLACE VIEW %s as %s;"
 
 
 @deconstructible
 class BackwardViewMigration(BackwardViewMigrationBase):
-    DROP_COMMAND_TEMPLATE = "DROP VIEW IF EXISTS %s;"
-    CREATE_COMMAND_TEMPLATE = "CREATE VIEW %s as %s;"
+    DROP_COMMAND_TEMPLATE = ""
+    CREATE_COMMAND_TEMPLATE = "CREATE OR REPLACE VIEW %s as %s;"
 
 
 @deconstructible
