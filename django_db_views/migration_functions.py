@@ -31,8 +31,8 @@ class ForwardViewMigrationBase(ViewMigration):
 class BackwardViewMigrationBase(ViewMigration):
     def __call__(self, apps, schema_editor):
         if (
-            (self.view_engine is None
-            or self.view_engine == schema_editor.connection.settings_dict["ENGINE"])
+            self.view_engine is None
+            or self.view_engine == schema_editor.connection.settings_dict["ENGINE"]
         ) and self.DROP_COMMAND_TEMPLATE:
             schema_editor.execute(self.DROP_COMMAND_TEMPLATE % self.table_name)
         if self.view_definition:
